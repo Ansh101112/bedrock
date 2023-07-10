@@ -4,11 +4,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-(function () {
-    'use strict';
+import TrackProductDownload from '../../../base/datalayer-productdownload.es6';
 
-    var directDownloadLink = document.getElementById('direct-download-link');
-    var downloadURL;
+(function () {
+    const directDownloadLink = document.getElementById('direct-download-link');
+    let downloadURL;
 
     // Only auto-start the download if a supported platform is detected.
     if (
@@ -22,7 +22,12 @@
             // Make sure the 'Try downloading again' link is well formatted! (issue 9615)
             if (directDownloadLink && directDownloadLink.href) {
                 directDownloadLink.href = downloadURL;
+                directDownloadLink.addEventListener('click', function (event) {
+                    TrackProductDownload.linkHandler(event);
+                });
             }
+
+            TrackProductDownload.sendEventFromURL(downloadURL);
 
             // Start the platform-detected download a second after DOM ready event.
             // We don't rely on the window load event as we have third-party tracking pixels.

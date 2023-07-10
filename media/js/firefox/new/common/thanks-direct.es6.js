@@ -4,17 +4,17 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-(function () {
-    'use strict';
+import TrackProductDownload from '../../../base/datalayer-productdownload.es6';
 
-    var timeout;
-    var requestComplete = false;
+(function () {
+    let timeout;
+    let requestComplete = false;
 
     function beginFirefoxDownload() {
-        var directDownloadLink = document.getElementById(
+        const directDownloadLink = document.getElementById(
             'direct-download-link'
         );
-        var downloadURL;
+        let downloadURL;
 
         // Only auto-start the download if a supported platform is detected.
         if (
@@ -28,7 +28,15 @@
                 // Make sure the 'Try downloading again' link is well formatted! (issue 9615)
                 if (directDownloadLink && directDownloadLink.href) {
                     directDownloadLink.href = downloadURL;
+                    directDownloadLink.addEventListener(
+                        'click',
+                        function (event) {
+                            TrackProductDownload.linkHandler(event);
+                        }
+                    );
                 }
+
+                TrackProductDownload.sendEventFromURL(downloadURL);
 
                 // Start the platform-detected download a second after DOM ready event.
                 // We don't rely on the window load event as we have third-party tracking pixels.
@@ -90,7 +98,7 @@
     ) {
         // Wait for GA to load so that we can pass along visit ID.
         Mozilla.StubAttribution.waitForGoogleAnalytics(function () {
-            var data = Mozilla.StubAttribution.getAttributionData();
+            const data = Mozilla.StubAttribution.getAttributionData();
 
             // make sure we check referrer for AMO (issue 11467)
             if (
