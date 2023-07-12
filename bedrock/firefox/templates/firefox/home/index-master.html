@@ -142,8 +142,8 @@
             {# Download link should be locale neutral see issue 7982 #}
             <li class="mzp-c-menu-list-item menu-desktop"><a href="/firefox/download/thanks/" data-link-type="Desktop" data-download-os="Desktop" data-download-version="standard" data-link-name="Trackers">{{ ftl('firefox-home-desktop') }}</a></li>
           <!--<![endif]-->
-          <li class="mzp-c-menu-list-item menu-android"><a href="{{ firefox_adjust_url('android', 'firefox_home') }}" rel="external noopener" data-link-type="download" data-display-name="Android" data-download-version="android" data-download-os="Android" data-link-name="Trackers"> {{ ftl('firefox-home-android') }}</a></li>
-          <li class="mzp-c-menu-list-item menu-ios"><a href="{{ firefox_adjust_url('ios', 'firefox_home') }}" rel="external noopener" data-link-type="download" data-display-name="iOS" data-download-version="ios" data-download-os="iOS" data-link-name="Trackers">{{ ftl('firefox-home-ios') }}</a></li>
+          <li class="mzp-c-menu-list-item menu-android"><a href="{{ firefox_adjust_url('android', 'firefox_home') }}" rel="external noopener" class="ga-product-download" data-link-type="download" data-display-name="Android" data-download-version="android" data-download-os="Android" data-link-name="Trackers"> {{ ftl('firefox-home-android') }}</a></li>
+          <li class="mzp-c-menu-list-item menu-ios"><a href="{{ firefox_adjust_url('ios', 'firefox_home') }}" rel="external noopener" class="ga-product-download" data-link-type="download" data-display-name="iOS" data-download-version="ios" data-download-os="iOS" data-link-name="Trackers">{{ ftl('firefox-home-ios') }}</a></li>
         </ul>
       </div>
       <p id="test-fbc" class="js-fx-only"><a class="mzp-c-cta-link" href="https://addons.mozilla.org/firefox/addon/facebook-container/{{ referrals }}">{{ ftl('firefox-home-get-the-facebook-container') }}</a></p>

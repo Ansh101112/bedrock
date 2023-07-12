@@ -36,11 +36,11 @@ describe('TrackProductDownload.isValidDownloadURL', function () {
         );
         expect(testPlayStoreURL).toBe(true);
     });
-    it('should not accept Adjust as a valid URL', function () {
+    it('should recognize Adjust as a valid URL', function () {
         let testAdjustURL = TrackProductDownload.isValidDownloadURL(
             'https://app.adjust.com/2uo1qc?redirect=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.mozilla.firefox&campaign=www.mozilla.org&adgroup=mobile-android-page'
         );
-        expect(testAdjustURL).toBe(false);
+        expect(testAdjustURL).toBe(true);
     });
     it('should not accept a random link to mozilla.org as a valid URL', function () {
         let testRandomURL = TrackProductDownload.isValidDownloadURL(
@@ -56,12 +56,14 @@ describe('TrackProductDownload.getEventObject', function () {
             event: 'product_download',
             product: 'testProduct',
             platform: 'testPlatform',
+            method: 'testMethod',
             release_channel: 'testReleaseChannel',
             download_language: 'testDownloadLanguage'
         };
         let testFullEventObject = TrackProductDownload.getEventObject(
             'testProduct',
             'testPlatform',
+            'testMethod',
             'testReleaseChannel',
             'testDownloadLanguage'
         );
@@ -72,12 +74,12 @@ describe('TrackProductDownload.getEventObject', function () {
             event: 'product_download',
             product: 'testProduct',
             platform: 'testPlatform',
-            release_channel: '',
-            download_language: ''
+            method: 'testMethod'
         };
         let testShortEventObject = TrackProductDownload.getEventObject(
             'testProduct',
-            'testPlatform'
+            'testPlatform',
+            'testMethod'
         );
         expect(testShortEventObject).toEqual(testShortEventExpectedObject);
     });
@@ -91,48 +93,120 @@ describe('TrackProductDownload.getEventFromUrl', function () {
         );
         expect(testProductDesktop['product']).toBe('firefox');
     });
-    it('should identify product for Firefox iOS', function () {
+    it('should identify product for Firefox in the App Store', function () {
         let testProductIOS = TrackProductDownload.getEventFromUrl(
             'https://itunes.apple.com/app/firefox-private-safe-browser/id989804926'
         );
         expect(testProductIOS['product']).toBe('firefox');
     });
-    it('should identify product for Firefox Android', function () {
+    it('should identify product for Firefox in the Play Store', function () {
         let testProductAndroid = TrackProductDownload.getEventFromUrl(
             'https://play.google.com/store/apps/details?id=org.mozilla.firefox&referrer=utm_source%3Dmozilla%26utm_medium%3DReferral%26utm_campaign%3Dmozilla-org'
         );
         expect(testProductAndroid['product']).toBe('firefox');
     });
+    it('should identify product for Firefox with Adjust', function () {
+        let testProductAndroid = TrackProductDownload.getEventFromUrl(
+            'https://app.adjust.com/2uo1qc'
+        );
+        expect(testProductAndroid['product']).toBe('firefox');
+    });
+    it('should identify product for Pocket in the App Store', function () {
+        let testProductIOS = TrackProductDownload.getEventFromUrl(
+            'https://itunes.apple.com/{country}/app/pocket-save-read-grow/id309601447'
+        );
+        expect(testProductIOS['product']).toBe('pocket');
+    });
+    it('should identify product for Pocket in the Play Store', function () {
+        let testProductAndroid = TrackProductDownload.getEventFromUrl(
+            'https://play.google.com/store/apps/details?id=com.ideashower.readitlater.pro'
+        );
+        expect(testProductAndroid['product']).toBe('pocket');
+    });
+    it('should identify product for Pocket with Adjust', function () {
+        let testProductAndroid = TrackProductDownload.getEventFromUrl(
+            'https://app.adjust.com/m54twk'
+        );
+        expect(testProductAndroid['product']).toBe('pocket');
+    });
+    it('should identify product for Focus in the App Store', function () {
+        let testProductIOS = TrackProductDownload.getEventFromUrl(
+            'https://itunes.apple.com/{country}/app/firefox-focus-privacy-browser/id1055677337'
+        );
+        expect(testProductIOS['product']).toBe('focus');
+    });
+    it('should identify product for Focus in the Play Store', function () {
+        let testProductAndroid = TrackProductDownload.getEventFromUrl(
+            'https://play.google.com/store/apps/details?id=org.mozilla.focus'
+        );
+        expect(testProductAndroid['product']).toBe('focus');
+    });
+    it('should identify product for Focus with Adjust', function () {
+        let testProductAndroid = TrackProductDownload.getEventFromUrl(
+            'https://app.adjust.com/b8s7qo'
+        );
+        expect(testProductAndroid['product']).toBe('focus');
+    });
+    it('should identify product for Klar in the App Store', function () {
+        let testProductIOS = TrackProductDownload.getEventFromUrl(
+            'https://itunes.apple.com/{country}/app/klar-by-firefox/id1073435754'
+        );
+        expect(testProductIOS['product']).toBe('klar');
+    });
+    it('should identify product for Klar in the Play Store', function () {
+        let testProductAndroid = TrackProductDownload.getEventFromUrl(
+            'https://play.google.com/store/apps/details?id=org.mozilla.klar'
+        );
+        expect(testProductAndroid['product']).toBe('klar');
+    });
+    it('should identify product for Klar with Adjust', function () {
+        let testProductAndroid = TrackProductDownload.getEventFromUrl(
+            'https://app.adjust.com/jfcx5x'
+        );
+        expect(testProductAndroid['product']).toBe('klar');
+    });
     // platform
-    it('should identify platform for Windows', function () {
+    it('should identify platform for Firefox for Windows', function () {
         let testPlatformWindows = TrackProductDownload.getEventFromUrl(
             'https://download.mozilla.org/?product=firefox-latest-ssl&os=win64&lang=en-US&_gl=1&234*_ga*ABC'
         );
         expect(testPlatformWindows['platform']).toBe('win64');
     });
-    it('should identify platform for MacOS', function () {
+    it('should identify platform for Firefox for MacOS', function () {
         let testPlatformMacOS = TrackProductDownload.getEventFromUrl(
             'https://download.mozilla.org/?product=firefox-latest-ssl&os=osx&lang=en-US'
         );
         expect(testPlatformMacOS['platform']).toBe('macos');
     });
-    it('should identify platform for Linux', function () {
+    it('should identify platform for Firefox for Linux', function () {
         let testPlatformLinux = TrackProductDownload.getEventFromUrl(
             'https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US'
         );
         expect(testPlatformLinux['platform']).toBe('linux64');
     });
-    it('should identify platform for iOS', function () {
+    it('should identify platform for Firefox in the App Store', function () {
         let testPlatformIOS = TrackProductDownload.getEventFromUrl(
             'https://itunes.apple.com/app/firefox-private-safe-browser/id989804926'
         );
         expect(testPlatformIOS['platform']).toBe('ios');
     });
-    it('should identify platform for Android', function () {
+    it('should identify platform for Firefox in the Play Store', function () {
         let testPlatformAndroid = TrackProductDownload.getEventFromUrl(
             'https://play.google.com/store/apps/details?id=org.mozilla.firefox&referrer=utm_source%3Dmozilla%26utm_medium%3DReferral%26utm_campaign%3Dmozilla-org'
         );
         expect(testPlatformAndroid['platform']).toBe('android');
+    });
+    it('should identify platform for Adjust link direct to Play Store', function () {
+        let testPlatformAndroid = TrackProductDownload.getEventFromUrl(
+            'https://app.adjust.com/b8s7qo?redirect=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.mozilla.focus&campaign=www.mozilla.org&adgroup=mobile-focus-page'
+        );
+        expect(testPlatformAndroid['platform']).toBe('android');
+    });
+    it('should identify platform for Adjust link direct to App Store', function () {
+        let testPlatformAndroid = TrackProductDownload.getEventFromUrl(
+            'https://app.adjust.com/b8s7qo?redirect=https%3A%2F%2Fitunes.apple.com%2Fus%2Fapp%2Ffirefox-focus-privacy-browser%2Fid1055677337&campaign=www.mozilla.org&adgroup=mobile-focus-page'
+        );
+        expect(testPlatformAndroid['platform']).toBe('ios');
     });
     // release channel
     it('should identify release_channel for Firefox Release', function () {
@@ -214,6 +288,12 @@ describe('TrackProductDownload.getEventFromUrl', function () {
         );
         expect(testLanguageAndroid['download_language']).toBeFalsy();
     });
+    it('should not identify language for an Adjust link', function () {
+        let testLanguageAndroid = TrackProductDownload.getEventFromUrl(
+            'https://app.adjust.com/2uo1qc'
+        );
+        expect(testLanguageAndroid['download_language']).toBeFalsy();
+    });
 });
 
 describe('TrackProductDownload.linkHandler', function () {
@@ -258,6 +338,7 @@ describe('TrackProductDownload.linkHandler', function () {
             event: 'product_download',
             product: 'firefox',
             platform: 'win64',
+            method: 'direct',
             release_channel: 'release',
             download_language: 'en-CA'
         });

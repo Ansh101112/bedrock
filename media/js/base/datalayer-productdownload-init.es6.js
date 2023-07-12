@@ -6,6 +6,4 @@
 
 // downloads from /thanks are tracked separately
 
-// can't use IDs, add classes to macro google_play_button and
-
-// create a macro for App Store buttons and add a class
+'ga-product-download';
