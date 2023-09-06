@@ -111,6 +111,8 @@
 -brand-name-mdn-web-docs = MDN Web Docs
 -brand-name-mdn-plus = MDN Plus
 -brand-name-thunderbird = Thunderbird
+-brand-name-mozilla-account = Mozilla account
+-brand-name-mozilla-accounts = Mozilla accounts
 
 ## Mozilla projects (short names)
 
