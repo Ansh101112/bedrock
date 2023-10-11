@@ -546,6 +546,9 @@ def mozsocial_waitlist_page(request):
 
 @require_safe
 def vpn_resource_center_redirect(request, slug):
+    # When a /more url is requested the user should be forwarded to the /resource-centre url
+    # If the rc article is not available in their requested language bedrock should display the /more/ article if it is available in their language.
+    # 2. If neither is available in their language bedrock should forward to the English rc article.
     VPNRC_SLUGS = {
         "what-is-an-ip-address": {
             "slug": "what-is-an-ip-address",
