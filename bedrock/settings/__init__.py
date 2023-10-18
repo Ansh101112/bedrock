@@ -182,6 +182,8 @@ else:
         "cdn-4.convertexperiments.com",
         "logs.convertexperiments.com",
         "images.ctfassets.net",
+        "*.visualwebsiteoptimizer.com",  # VWO a/b testing
+        "app.vwo.com",  # VWO a/b testing
     ]
     _csp_script_src = [
         # TODO fix things so that we don't need this
@@ -200,11 +202,15 @@ else:
         "1003350.track.convertexperiments.com",
         "1003343.track.convertexperiments.com",
         "js.stripe.com",
+        "*.visualwebsiteoptimizer.com",  # VWO a/b testing
+        "app.vwo.com",  # VWO a/b testing
     ]
     _csp_style_src = [
         # TODO fix things so that we don't need this
         "'unsafe-inline'",
         "app.convert.com",
+        "*.visualwebsiteoptimizer.com",  # VWO a/b testing
+        "app.vwo.com",  # VWO a/b testing
     ]
     _csp_child_src = [
         "www.googletagmanager.com",
@@ -216,6 +222,8 @@ else:
         "accounts.firefox.com.cn",
         "www.youtube.com",
         "js.stripe.com",
+        "*.visualwebsiteoptimizer.com",  # VWO a/b testing
+        "app.vwo.com",  # VWO a/b testing
     ]
     _csp_connect_src = [
         "www.googletagmanager.com",
@@ -230,6 +238,8 @@ else:
         FXA_ENDPOINT,
         "stage.cjms.nonprod.cloudops.mozgcp.net",
         "cjms.services.mozilla.com",
+        "*.visualwebsiteoptimizer.com",  # VWO a/b testing
+        "app.vwo.com",  # VWO a/b testing
     ]
     _csp_connect_extra_for_dev = []
     _csp_font_src = [
