@@ -224,6 +224,7 @@ else:
         "js.stripe.com",
         "*.visualwebsiteoptimizer.com",  # VWO a/b testing
         "app.vwo.com",  # VWO a/b testing
+        "blob:",  # VWO a/b testing
     ]
     _csp_connect_src = [
         "www.googletagmanager.com",
